@@ -1,5 +1,15 @@
 # СРО 3. Киберриск
 
+Скачать проект одной командой:
+
+```bash
+git clone https://github.com/kbm277/sro3-kiberisk.git
+cd sro3-kiberisk
+docker compose up -d --build
+```
+
+После этого открой http://localhost:8090
+
 Три контейнера:
 
 | Что | Образ | Адрес |
