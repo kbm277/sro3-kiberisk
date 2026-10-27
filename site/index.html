@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>СРО 3 · Киберриск</title>
+  <style>
+    :root {
+      --bg: #0f1720;
+      --card: #182430;
+      --line: #2a3b4d;
+      --text: #e7eef6;
+      --muted: #9aafc2;
+      --accent: #3ddc97;
+      --warn: #f0b429;
+      --high: #f07178;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      padding: 32px 8vw 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    header p { color: var(--muted); margin: 6px 0 0; }
+    main { padding: 28px 8vw 48px; max-width: 980px; }
+    h1 { margin: 0; font-size: 1.8rem; }
+    h2 { font-size: 1.15rem; margin: 28px 0 10px; }
+    .badge {
+      display: inline-block;
+      background: #143528;
+      color: var(--accent);
+      border: 1px solid #24664a;
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .card strong { display: block; margin-bottom: 4px; }
+    .card span { color: var(--muted); font-size: 0.92rem; }
+    table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 12px; overflow: hidden; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); font-size: 0.92rem; }
+    th { color: var(--muted); font-weight: 600; }
+    .high { color: var(--high); }
+    .mid { color: var(--warn); }
+    .low { color: var(--accent); }
+    footer { color: var(--muted); font-size: 0.85rem; margin-top: 28px; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="badge">контейнер · nginx</span>
+    <h1>СРО 3. Киберриск</h1>
+    <p>Учебный сайт, который работает внутри Docker-контейнера.</p>
+  </header>
+  <main>
+    <h2>Что такое киберриск</h2>
+    <div class="grid">
+      <div class="card">
+        <strong>Актив</strong>
+        <span>То, что нужно защищать: данные, сервис, учётная запись.</span>
+      </div>
+      <div class="card">
+        <strong>Угроза</strong>
+        <span>Событие, которое может навредить активу: утечка, простой, подмена.</span>
+      </div>
+      <div class="card">
+        <strong>Оценка</strong>
+        <span>Вероятность × ущерб. Чем выше балл, тем раньше этот риск разбирают.</span>
+      </div>
+    </div>
+
+    <h2>Пример реестра</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Актив</th>
+          <th>Угроза</th>
+          <th>Вероятность</th>
+          <th>Ущерб</th>
+          <th>Балл</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>База студентов</td>
+          <td>Утечка персональных данных</td>
+          <td>средняя</td>
+          <td>высокий</td>
+          <td class="high">высокий</td>
+        </tr>
+        <tr>
+          <td>Учебный портал</td>
+          <td>Недоступность сервиса</td>
+          <td>низкая</td>
+          <td>средний</td>
+          <td class="mid">средний</td>
+        </tr>
+        <tr>
+          <td>Почтовый ящик</td>
+          <td>Фишинговое письмо</td>
+          <td>высокая</td>
+          <td>средний</td>
+          <td class="high">высокий</td>
+        </tr>
+        <tr>
+          <td>Резервная копия</td>
+          <td>Копия не проверялась</td>
+          <td>средняя</td>
+          <td>высокий</td>
+          <td class="mid">средний</td>
+        </tr>
+      </tbody>
+    </table>
+    <footer>Образ собран из Dockerfile на базе nginx:1.27-alpine. Страница отдаётся контейнером на порту 8090.</footer>
+  </main>
+</body>
+</html>

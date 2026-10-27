@@ -1,0 +1,17 @@
+services:
+  site:
+    build: ./site
+    image: cyberrisk-site:1.0
+    ports:
+      - "8090:80"
+
+  cache:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+
+  custom:
+    build: ./custom
+    image: cyberrisk-custom:1.0
+    ports:
+      - "8081:8081"
