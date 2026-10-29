@@ -14,11 +14,11 @@ docker compose up -d --build
 
 | Сервис | Образ на Docker Hub | Адрес |
 | --- | --- | --- |
-| Сайт | `kbm277/cyberrisk-site:1.0` | http://localhost:8090 |
-| Свой реестр рисков | `kbm277/cyberrisk-custom:1.0` | http://localhost:8081 |
-| Кэш Redis | `kbm277/cyberrisk-cache:1.0` | порт `6380` |
-| База PostgreSQL | `kbm277/cyberrisk-db:1.0` | порт `5433`, база `risks`, пользователь `cyber`, пароль `cyberlab` |
-| Мониторинг | `kbm277/cyberrisk-monitor:1.0` | http://localhost:8082 |
+| Сайт | `baur7/cyberrisk-site:1.0` | http://localhost:8090 |
+| Свой реестр рисков | `baur7/cyberrisk-custom:1.0` | http://localhost:8081 |
+| Кэш Redis | `baur7/cyberrisk-cache:1.0` | порт `6380` |
+| База PostgreSQL | `baur7/cyberrisk-db:1.0` | порт `5433`, база `risks`, пользователь `cyber`, пароль `cyberlab` |
+| Мониторинг | `baur7/cyberrisk-monitor:1.0` | http://localhost:8082 |
 
 ## Как работает Docker Compose
 
@@ -49,13 +49,13 @@ docker exec -it sro3-kiberisk-db-1 psql -U cyber -d risks -c "SELECT asset, like
 
 ## Docker Hub
 
-Образы подписаны логином `kbm277`, поэтому `docker compose push` кладёт их сразу в нужные репозитории:
+Образы подписаны логином `baur7`, поэтому `docker compose push` кладёт их сразу в нужные репозитории:
 
-- https://hub.docker.com/r/kbm277/cyberrisk-site
-- https://hub.docker.com/r/kbm277/cyberrisk-custom
-- https://hub.docker.com/r/kbm277/cyberrisk-cache
-- https://hub.docker.com/r/kbm277/cyberrisk-db
-- https://hub.docker.com/r/kbm277/cyberrisk-monitor
+- https://hub.docker.com/r/baur7/cyberrisk-site
+- https://hub.docker.com/r/baur7/cyberrisk-custom
+- https://hub.docker.com/r/baur7/cyberrisk-cache
+- https://hub.docker.com/r/baur7/cyberrisk-db
+- https://hub.docker.com/r/baur7/cyberrisk-monitor
 
 Перед отправкой нужен вход:
 

@@ -3,7 +3,7 @@ name: sro3-kiberisk
 services:
   site:
     build: ./site
-    image: kbm277/cyberrisk-site:1.0
+    image: baur7/cyberrisk-site:1.0
     ports:
       - "8090:80"
     depends_on:
@@ -17,7 +17,7 @@ services:
 
   custom:
     build: ./custom
-    image: kbm277/cyberrisk-custom:1.0
+    image: baur7/cyberrisk-custom:1.0
     ports:
       - "8081:8081"
     healthcheck:
@@ -28,7 +28,7 @@ services:
 
   cache:
     build: ./cache
-    image: kbm277/cyberrisk-cache:1.0
+    image: baur7/cyberrisk-cache:1.0
     ports:
       - "6380:6379"
     healthcheck:
@@ -39,7 +39,7 @@ services:
 
   db:
     build: ./db
-    image: kbm277/cyberrisk-db:1.0
+    image: baur7/cyberrisk-db:1.0
     environment:
       POSTGRES_USER: cyber
       POSTGRES_PASSWORD: cyberlab
@@ -54,7 +54,7 @@ services:
 
   monitor:
     build: ./monitor
-    image: kbm277/cyberrisk-monitor:1.0
+    image: baur7/cyberrisk-monitor:1.0
     ports:
       - "8082:8082"
     depends_on:
