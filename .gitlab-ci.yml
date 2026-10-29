@@ -1,0 +1,41 @@
+# Пайплайн GitLab: собирает пять образов и отправляет их на Docker Hub
+# теми же командами Compose, что и на локальной машине.
+#
+# В Settings → CI/CD → Variables добавь:
+#   DOCKERHUB_USER  = логин Docker Hub
+#   DOCKERHUB_TOKEN = access token, тип Masked
+
+stages:
+  - build
+  - push
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_VERIFY: "1"
+  DOCKER_CERT_PATH: "/certs/client"
+
+.build:
+  image: docker:27
+  services:
+    - docker:27-dind
+  before_script:
+    - apk add --no-cache curl
+    - mkdir -p /usr/local/lib/docker/cli-plugins
+    - curl -fsSL "https://github.com/docker/compose/releases/download/v2.32.4/docker-compose-linux-x86_64" -o /usr/local/lib/docker/cli-plugins/docker-compose
+    - chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+build:
+  extends: .build
+  stage: build
+  script:
+    - docker compose build
+
+push:
+  extends: .build
+  stage: push
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  script:
+    - echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin
+    - docker compose push

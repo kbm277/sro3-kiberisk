@@ -1,17 +1,73 @@
+name: sro3-kiberisk
+
 services:
   site:
     build: ./site
-    image: cyberrisk-site:1.0
+    image: kbm277/cyberrisk-site:1.0
     ports:
       - "8090:80"
-
-  cache:
-    image: redis:7-alpine
-    ports:
-      - "6380:6379"
+    depends_on:
+      custom:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   custom:
     build: ./custom
-    image: cyberrisk-custom:1.0
+    image: kbm277/cyberrisk-custom:1.0
     ports:
       - "8081:8081"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  cache:
+    build: ./cache
+    image: kbm277/cyberrisk-cache:1.0
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  db:
+    build: ./db
+    image: kbm277/cyberrisk-db:1.0
+    environment:
+      POSTGRES_USER: cyber
+      POSTGRES_PASSWORD: cyberlab
+      POSTGRES_DB: risks
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cyber -d risks"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  monitor:
+    build: ./monitor
+    image: kbm277/cyberrisk-monitor:1.0
+    ports:
+      - "8082:8082"
+    depends_on:
+      site:
+        condition: service_healthy
+      custom:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8082/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
