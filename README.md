@@ -80,6 +80,6 @@ git push gitlab main
 ```
 
 2. В проекте открой **Settings → CI/CD → Variables** и добавь `DOCKERHUB_USER` и `DOCKERHUB_TOKEN` (токен Docker Hub, флаг Masked).
-3. Пайплайн на ветке `main` выполнит `docker compose build`, затем `docker compose push`.
+3. Пайплайн на ветке `main` выполнит `docker compose build`, затем `docker compose push`. Это push-модель: раннер сам отправляет образы. Сравнение с pull-моделью: [research/cicd-push-pull.md](research/cicd-push-pull.md).
 
 Код работы лежит на GitHub: https://github.com/kbm277/sro3-kiberisk
