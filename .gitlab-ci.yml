@@ -7,6 +7,7 @@
 
 stages:
   - build
+  - test
   - push
 
 variables:
@@ -30,6 +31,29 @@ build:
   stage: build
   script:
     - docker compose build
+    - docker save -o images.tar $(docker compose config --images)
+    - gzip images.tar
+  artifacts:
+    paths: [images.tar.gz]
+    expire_in: 1 day
+
+test:
+  extends: .build
+  stage: test
+  script:
+    - docker load -i images.tar.gz
+    - docker compose up --no-build --pull never --wait --wait-timeout 120
+    - curl -fsS http://docker:8090/ -o served.html
+    - cmp site/index.html served.html
+    - apk add --no-cache jq
+    - curl -fsS http://docker:8081/api/risks -o risks.json
+    - |
+      jq -e '.service == "cyberrisk-custom" and (.risks | length > 0) and all(.risks[]; .score == .likelihood * .impact)' risks.json
+    - test "$(docker compose exec -T cache redis-cli ping)" = PONG
+    - test "$(docker compose exec -T db psql -U cyber -d risks -Atc 'SELECT count(*) FROM risks')" = 5
+    - curl -fsS http://docker:8082/health
+  after_script:
+    - docker compose down -v
 
 push:
   extends: .build
@@ -37,5 +61,6 @@ push:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
   script:
+    - docker load -i images.tar.gz
     - echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin
     - docker compose push
