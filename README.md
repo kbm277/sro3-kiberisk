@@ -83,3 +83,13 @@ git push gitlab main
 3. GitLab пайплайны бес контейнер бейнесін құрастырып, Docker Hub-қа жариялауға арналған. Орналастыру модельдері мен пайплайн ерекшеліктері [қазақша зерттеуде](research/cicd-push-pull.md) түсіндірілген.
 
 Код работы лежит на GitHub: https://github.com/kbm277/sro3-kiberisk
+
+## СРО бойынша CI/CD
+
+[GitLab CI конфигурациясында](.gitlab-ci.yml) үш кезең бар.
+
+1. **build** — [Docker Compose](docker-compose.yml) арқылы бес образ жинап, оларды бір архивке сақтайды.
+2. **test** — архивтегі образдардан стендті іске қосады. Сайттың HTML файлын, API-дегі тәуекел балын (ықтималдық × әсер), Redis жауабын, PostgreSQL кестесіндегі бес жазбаны және мониторинг сервисін тексереді.
+3. **push** — барлық тексеру сәтті аяқталғанда ғана `main` тармағындағы тексерілген образдарды Docker Hub-қа жібереді. Тест қатемен аяқталса, жариялау кезеңі орындалмайды.
+
+[GitHub Actions конфигурациясы](.github/workflows/cyberrisk.yml) сайтты GitHub Pages-ке жариялайды. [TEST және DEPLOY орындалған журнал](https://github.com/kbm277/sro3-kiberisk/actions/runs/45208970963) · [Жарияланған сайт](https://kbm277.github.io/sro3-kiberisk/).
